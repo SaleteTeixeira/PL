@@ -1,11 +1,11 @@
 BEGIN {FS=" "}
 
-NF>0 {if ($6 ~ /^pos=verb.*/) verbos[$2]++;
-      if ($6 ~ /^pos=noun.*/) substantivos[$2]++;
-      if ($6 ~ /^pos=adjective.*/) adjetivos[$2]++;
-      if ($6 ~ /^pos=adverb.*/) adverbios[$2]++}
+NF>0 {if ($4 ~ /^V/) verbos[$2]++;
+      if ($4 ~ /^N/) substantivos[$2]++;
+      if ($4 ~ /^A/) adjetivos[$2]++;
+      if ($4 ~ /^R/) adverbios[$2]++ }
 
-END {filename="verbos.txt"; for(i in verbos) print verbos[i], i >>filename; close (filename); 
-     filename="substantivos.txt"; for(i in substantivos) print substantivos[i], i >>filename; close (filename);
-     filename="adjetivos.txt"; for(i in adjetivos) print adjetivos[i], i >>filename; close (filename);
-     filename="adverbios.txt"; for(i in adverbios) print adverbios[i], i >>filename; close (filename)}
+END {for(i in verbos) print verbos[i], i | "sort -n -r > verbos.txt";  
+     for(i in substantivos) print substantivos[i], i | "sort -n -r > substantivos.txt";
+     for(i in adjetivos) print adjetivos[i], i | "sort -n -r > adjetivos.txt";
+     for(i in adverbios) print adverbios[i], i | "sort -n -r > adverbios.txt"}
