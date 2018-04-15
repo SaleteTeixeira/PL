@@ -1,0 +1,20 @@
+Info        Latex               Markdown        .3s
+Negrito     \textbf{}           **-**           \b{}
+Negrito     \textbf{}           __-__           \b{}
+Italico     \textit{}           *-*             \i{}
+Italico     \emph{}             _-_             \i{}
+Sublinhado  \underline{}                        \u{}
+Titulo1     \title{}            #               \mt\
+Titulo2     \part{}             ##              \p\
+Titulo3     \chapter{}          ###             \c\
+Titulo4     \section{}          ####            \s\
+Titulo5     \subsection{}       #####           \ss\
+Titulo6     \subsubsection{}    ######          \sss\
+ÑNumerados  \being{itemize}     -               -_
+            \item
+            \end{itemize}
+Numerados   \being{enumerate}   1.              1.
+            \item
+            \end{enumerate}
+Paragrafo   \par                ...             '   '
+NewLine     \newline            \n              '\n'
