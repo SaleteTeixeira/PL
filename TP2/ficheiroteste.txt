@@ -1,0 +1,50 @@
+__**ola**__
+# tudo bem ?
+
+__fixe__
+
+- Ola amigas
+- Oi
+	6. querem
+	5. Saltar
+		1. Para
+			- A
+	3. Agua
+- todas
+- juntas
+
+- Bem vindo
+- **as __linhas__**
+
+1. primeiro
+5. segundo
+	- ola1
+	- ola2
+		6. terceiro
+	- ola3
+
+ahaha
+__**ola**__
+```javascript
+var s = "JavaScript syntax highlighting";
+alert(s);
+```
+```python
+s = "Python syntax highlighting"
+print s
+```
+nao faças merda
+
+- [texto](http://github.com)
+- ```javascript
+	[texto](http://github.com)
+	<http://github.com>
+  ```
+- <http://github.com>
+- oafghj
+
+[texto](http://github.com)
+<http://github.com>
+
+![ola](gatos.png "ola")
+![](gatos.png "legenda")
