@@ -135,10 +135,17 @@ int i=0, k=0, tabs=0, currenttabs=0, b=0, j=0;
 							  printf("\\begin{figure}[h]\n\\centering\n\\includegraphics{%s}\n\\caption{%s}\n\\end{figure}",path,cap);}
 
 //( '"'.*'"')?
+
 %%
 
 int main(){
-	printf("\\documentclass{article}\n\\usepackage[utf8]{inputenc}\n\\usepackage[portuges]{babel}\n\\usepackage{minted}\n\\usepackage{hyperref}\n\\hypersetup{colorlinks=true,linkcolor=blue}\n\\begin{document}\n\n");
+	printf("\\documentclass{article}\n");
+	printf("\\usepackage[utf8]{inputenc}\n");
+	printf("\\usepackage[portuges]{babel}\n");
+	printf("\\usepackage{minted}\n");
+	printf("\\usepackage{hyperref}\n");
+	printf("\\hypersetup{colorlinks=true,linkcolor=blue}\n");
+	printf("\\begin{document}\n\n");
 	yylex();
 	printf("\n\\end{document}\n");
 }
