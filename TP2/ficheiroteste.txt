@@ -39,12 +39,20 @@ nao faças merda
 - ```javascript
 	[texto](http://github.com)
 	<http://github.com>
-  ```
+  	```
 - <http://github.com>
-- oafghj
+- ![ola](gatos.png)
+- ´´´ ola
+ ´´´
+- deu?
 
 [texto](http://github.com)
 <http://github.com>
 
-![ola](gatos.png "ola")
+![ola](gatos.png)
 ![](gatos.png "legenda")
+
+ ´´´
+[texto](http://github.com)
+	<http://github.com>
+  ´´´
