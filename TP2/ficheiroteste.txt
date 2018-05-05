@@ -56,3 +56,7 @@ nao faças merda
 [texto](http://github.com)
 	<http://github.com>
   ´´´
+
+** \sum(1,2) __\div(10,5) \mul(2,5) \sub(10,5)__ 
+\mul(2,5) \sum(1,2,-5,200)**
+\sub(10,5)

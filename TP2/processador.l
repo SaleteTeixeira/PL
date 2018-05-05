@@ -4,7 +4,40 @@
 #include <stdlib.h>
 #include <string.h>
 int args[1024], l[1024];
-int i=0, k=0, tabs=0, currenttabs=0, b=0, j=0; 
+int i=0, k=0, tabs=0, currenttabs=0, b=0, j=0;
+
+float soma(float* buf, int vir){
+	float s = 0;
+	for(int l=0; l<vir; l++){
+		s += buf[l];
+	}
+	return s;
+}
+
+float divi(float* buf, int vir){
+	float s = buf[0];
+	for(int l=1; l<vir; l++){
+		s = s/buf[l];
+	}
+	return s;
+}
+
+float subt(float* buf, int vir){
+	float s = buf[0];
+	for(int l=1; l<vir; l++){
+		s -= buf[l];
+	}
+	return s;
+}
+
+float mult(float* buf, int vir){
+	float s = 1;
+	for(int l=0; l<vir; l++){
+		s *= buf[l];
+	}
+	return s;
+}
+
 %}
 %option yylineno
 
@@ -63,6 +96,94 @@ int i=0, k=0, tabs=0, currenttabs=0, b=0, j=0;
 
 <*>\<.*\>			{ yytext[yyleng-1]='\0';
 					  printf("\\url{%s}",yytext+1); }
+
+<*>\\sum\([^)]*\)		{
+							int vir=0;
+							int letra=0;
+							char buf[100];
+							float num[20];
+							memset(buf, 0, strlen(buf));
+							for(int l=5; l<strlen(yytext); l++){
+								if(yytext[l]==','|| yytext[l]==')') {
+									num[vir]=atof(buf); 
+									vir++; 
+									memset(buf, 0, strlen(buf)); 
+									letra=0;
+								}
+								else {
+									buf[letra]=yytext[l]; 
+									letra++;
+								}
+							}
+							float res = soma(num, vir);
+							printf("%f",res);
+						}
+
+<*>\\div\([^)]*\)		{
+							int vir=0;
+							int letra=0;
+							char buf[100];
+							float num[20];
+							memset(buf, 0, strlen(buf));
+							for(int l=5; l<strlen(yytext); l++){
+								if(yytext[l]==',' || yytext[l]==')') {
+									num[vir]=atof(buf); 
+									vir++; 
+									memset(buf, 0, strlen(buf)); 
+									letra=0;
+								}
+								else {
+									buf[letra]=yytext[l]; 
+									letra++;
+								}
+							}
+							float res = divi(num, vir);
+							printf("%f",res);
+						}
+
+<*>\\mul\([^)]*\)		{
+							int vir=0;
+							int letra=0;
+							char buf[100];
+							float num[20];
+							memset(buf, 0, strlen(buf));
+							for(int l=5; l<strlen(yytext); l++){
+								if(yytext[l]==',' || yytext[l]==')') {
+									num[vir]=atof(buf); 
+									vir++; 
+									memset(buf, 0, strlen(buf)); 
+									letra=0;
+								}
+								else {
+									buf[letra]=yytext[l]; 
+									letra++;
+								}
+							}
+							float res = mult(num, vir);
+							printf("%f",res);
+						}
+
+<*>\\sub\([^)]*\)		{
+							int vir=0;
+							int letra=0;
+							char buf[100];
+							float num[20];
+							memset(buf, 0, strlen(buf));
+							for(int l=5; l<strlen(yytext); l++){
+								if(yytext[l]==',' || yytext[l]==')') {
+									num[vir]=atof(buf); 
+									vir++; 
+									memset(buf, 0, strlen(buf)); 
+									letra=0;
+								}
+								else {
+									buf[letra]=yytext[l]; 
+									letra++;
+								}
+							}
+							float res = subt(num, vir);
+							printf("%f",res);
+						}
 
 <negrito>\*\*	{ printf("}");
 				  i--;
