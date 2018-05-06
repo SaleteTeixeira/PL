@@ -325,6 +325,7 @@ int main(){
 	printf("\\usepackage[portuges]{babel}\n");
 	printf("\\usepackage{minted}\n");
 	printf("\\usepackage{hyperref}\n");
+	printf("\\usepackage{graphicx}\n");
 	printf("\\hypersetup{colorlinks=true,linkcolor=blue}\n");
 	printf("\\begin{document}\n\n");
 	yylex();
