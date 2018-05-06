@@ -94,7 +94,7 @@ float mult(float* buf, int vir){
 					  link[j]='\0';
 					  printf("\\href{%s}{%s}",text,link); }
 
-<*>\<.*\>			{ yytext[yyleng-1]='\0';
+<*>\<.+\>			{ yytext[yyleng-1]='\0';
 					  printf("\\url{%s}",yytext+1); }
 
 <*>\\sum\([^)]*\)		{
