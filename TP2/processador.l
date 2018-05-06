@@ -326,6 +326,7 @@ int main(){
 	printf("\\usepackage{minted}\n");
 	printf("\\usepackage{hyperref}\n");
 	printf("\\usepackage{graphicx}\n");
+	printf("\\usepackage{textcomp}\n");
 	printf("\\hypersetup{colorlinks=true,linkcolor=blue}\n");
 	printf("\\begin{document}\n\n");
 	yylex();
