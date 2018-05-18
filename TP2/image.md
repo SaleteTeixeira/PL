@@ -1,1 +1,0 @@
-![](gatos.jpg "Gato pequeno")
