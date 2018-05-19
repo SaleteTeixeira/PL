@@ -1,0 +1,162 @@
+Grammar
+
+    0 $accept: SeqComandos $end
+
+    1 SeqComandos: SeqComandos Comando
+    2            | %empty
+
+    3 Comando: PALAVRA
+    4        | SIGNIFICADO
+    5        | Variacoes
+    6        | INGLES
+    7        | SINONIMOS
+
+    8 Variacoes: Variacoes ';' Termo
+    9          | Termo
+
+   10 Termo: '-'
+   11      | VARIACOES
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+'-' (45) 10
+';' (59) 8
+error (256)
+PALAVRA (258) 3
+SIGNIFICADO (259) 4
+VARIACOES (260) 11
+INGLES (261) 6
+SINONIMOS (262) 7
+
+
+Nonterminals, with rules where they appear
+
+$accept (10)
+    on left: 0
+SeqComandos (11)
+    on left: 1 2, on right: 0 1
+Comando (12)
+    on left: 3 4 5 6 7, on right: 1
+Variacoes (13)
+    on left: 8 9, on right: 5 8
+Termo (14)
+    on left: 10 11, on right: 8 9
+
+
+State 0
+
+    0 $accept: . SeqComandos $end
+
+    $default  reduce using rule 2 (SeqComandos)
+
+    SeqComandos  go to state 1
+
+
+State 1
+
+    0 $accept: SeqComandos . $end
+    1 SeqComandos: SeqComandos . Comando
+
+    $end         shift, and go to state 2
+    PALAVRA      shift, and go to state 3
+    SIGNIFICADO  shift, and go to state 4
+    VARIACOES    shift, and go to state 5
+    INGLES       shift, and go to state 6
+    SINONIMOS    shift, and go to state 7
+    '-'          shift, and go to state 8
+
+    Comando    go to state 9
+    Variacoes  go to state 10
+    Termo      go to state 11
+
+
+State 2
+
+    0 $accept: SeqComandos $end .
+
+    $default  accept
+
+
+State 3
+
+    3 Comando: PALAVRA .
+
+    $default  reduce using rule 3 (Comando)
+
+
+State 4
+
+    4 Comando: SIGNIFICADO .
+
+    $default  reduce using rule 4 (Comando)
+
+
+State 5
+
+   11 Termo: VARIACOES .
+
+    $default  reduce using rule 11 (Termo)
+
+
+State 6
+
+    6 Comando: INGLES .
+
+    $default  reduce using rule 6 (Comando)
+
+
+State 7
+
+    7 Comando: SINONIMOS .
+
+    $default  reduce using rule 7 (Comando)
+
+
+State 8
+
+   10 Termo: '-' .
+
+    $default  reduce using rule 10 (Termo)
+
+
+State 9
+
+    1 SeqComandos: SeqComandos Comando .
+
+    $default  reduce using rule 1 (SeqComandos)
+
+
+State 10
+
+    5 Comando: Variacoes .
+    8 Variacoes: Variacoes . ';' Termo
+
+    ';'  shift, and go to state 12
+
+    $default  reduce using rule 5 (Comando)
+
+
+State 11
+
+    9 Variacoes: Termo .
+
+    $default  reduce using rule 9 (Variacoes)
+
+
+State 12
+
+    8 Variacoes: Variacoes ';' . Termo
+
+    VARIACOES  shift, and go to state 5
+    '-'        shift, and go to state 8
+
+    Termo  go to state 13
+
+
+State 13
+
+    8 Variacoes: Variacoes ';' Termo .
+
+    $default  reduce using rule 8 (Variacoes)
