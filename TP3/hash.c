@@ -1,7 +1,18 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <ctype.h>
 #include "hash.h"
+
+char* allLower(char* palavra){
+  int tam = strlen(palavra);
+
+  for(int i=0; i<tam; i++){
+    putchar(tolower(palavra[i]));
+  }
+
+  return palavra;
+}
 
 int hash(char* palavra, int size){
   int codigo = 0;
@@ -17,19 +28,18 @@ char* getIngles(Dic dic, char* palavra){
   int pos = hash(palavra, dic.size);
 
   if(dic.e[pos].ocupado){
-    if(strcmp(palavra, dic.e[pos].palavra)==0) return dic.e[pos].ingles;
+    if(strcmp(allLower(palavra), dic.e[pos].palavra)==0) return dic.e[pos].ingles;
     for(int i=0; i<30; i++){
-      if(strcmp(palavra, dic.e[pos].variacoes[i])==0) return dic.e[pos].ingles;
+      if(strcmp(allLower(palavra), dic.e[pos].variacoes[i])==0) return dic.e[pos].ingles;
     }
   }
   int i;
   i = pos+1;
-  int flag=0;
   while(i!=pos){
-    if(!dic.e[pos].ocupado){
-      if(strcmp(palavra, dic.e[i].palavra)==0) return dic.e[pos].ingles;
+    if(dic.e[pos].ocupado){
+      if(strcmp(allLower(palavra), dic.e[i].palavra)==0) return dic.e[pos].ingles;
       for(int j=0; j<30; j++){
-        if(strcmp(palavra, dic.e[pos].variacoes[j])==0) return dic.e[pos].ingles;
+        if(strcmp(allLower(palavra), dic.e[pos].variacoes[j])==0) return dic.e[pos].ingles;
       }
     }
     i=((i+1)%dic.size);
@@ -42,19 +52,18 @@ int exists(char* palavra, Dic dic){
   int pos = hash(palavra, dic.size);
 
   if(dic.e[pos].ocupado){
-    if(strcmp(palavra, dic.e[pos].palavra)==0) return 1;
+    if(strcmp(allLower(palavra), dic.e[pos].palavra)==0) return 1;
     for(int i=0; i<30; i++){
-      if(strcmp(palavra, dic.e[pos].variacoes[i])==0) return 1;
+      if(strcmp(allLower(palavra), dic.e[pos].variacoes[i])==0) return 1;
     }
   }
   int i;
   i = pos+1;
-  int flag=0;
   while(i!=pos){
-    if(!dic.e[pos].ocupado){
-      if(strcmp(palavra, dic.e[i].palavra)==0) return 1;
+    if(dic.e[pos].ocupado){
+      if(strcmp(allLower(palavra), dic.e[i].palavra)==0) return 1;
       for(int j=0; j<30; j++){
-        if(strcmp(palavra, dic.e[i].variacoes[j])==0) return 1;
+        if(strcmp(allLower(palavra), dic.e[i].variacoes[j])==0) return 1;
       }
     }
     i=((i+1)%dic.size);
@@ -92,7 +101,7 @@ Dic insert(Dic ests, char* palavra, char* significado, char** variacoes, char* i
     int pos = hash(palavra, dic.size);
 
     if(!dic.e[pos].ocupado){
-      if(strcmp(palavra, dic.e[pos].palavra)!=0){
+      if(strcmp(allLower(palavra), dic.e[pos].palavra)!=0){
         copiar(dic,pos,palavra,significado,variacoes,ingles,sinonimos);
       }
     }
@@ -100,7 +109,7 @@ Dic insert(Dic ests, char* palavra, char* significado, char** variacoes, char* i
       i = pos+1;
       int flag=0;
       while(i!=pos && !flag){
-        if(strcmp(palavra, dic.e[i].palavra)!=0){
+        if(strcmp(allLower(palavra), dic.e[i].palavra)!=0){
           copiar(dic,i,palavra,significado,variacoes,ingles,sinonimos);
           flag=1;
         }
@@ -112,7 +121,7 @@ Dic insert(Dic ests, char* palavra, char* significado, char** variacoes, char* i
     int pos = hash(palavra, ests.size);
 
     if(!ests.e[pos].ocupado){
-      if(strcmp(palavra, ests.e[pos].palavra)!=0){
+      if(strcmp(allLower(palavra), ests.e[pos].palavra)!=0){
         copiar(ests,pos,palavra,significado,variacoes,ingles,sinonimos);
       }
     }
@@ -122,7 +131,7 @@ Dic insert(Dic ests, char* palavra, char* significado, char** variacoes, char* i
       int flag=0;
       while(i!=pos && !flag){
         if(!ests.e[pos].ocupado){
-          if(strcmp(palavra, ests.e[i].palavra)!=0){
+          if(strcmp(allLower(palavra), ests.e[i].palavra)!=0){
             copiar(ests,i,palavra,significado,variacoes,ingles,sinonimos);
             flag=1;
           }
