@@ -4,7 +4,6 @@
 #include <ctype.h>
 #include "hash.h"
 
-
 char* allLower(char* palavra){
   int tam = strlen(palavra);
 
@@ -23,61 +22,6 @@ int hash(char* palavra, int size){
   }
 
   return codigo%size;
-}
-
-//alterar variacoes
-void printInfo(Dic dic, char* palavra){
-  int pos = hash(palavra, dic.size);
-
-  if(dic.e[pos].ocupado){
-    if(strcmp(allLower(palavra), dic.e[pos].palavra)==0){
-      printf("%s & %s & ", dic.e[pos].palavra, dic.e[pos].significado);
-      for(int i=0; i<30; i++){
-        printf("%s",dic.e[pos].variacoes[i]);
-      }
-      printf(" & %s & %s", dic.e[pos].ingles, dic.e[pos].sinonimos);
-    }
-  }
-  else{
-    int i;
-    i = pos+1;
-    while(i!=pos){
-      if(dic.e[pos].ocupado){
-        if(strcmp(allLower(palavra), dic.e[i].palavra)==0){
-          printf("%s & %s & ", dic.e[pos].palavra, dic.e[pos].significado);
-          for(int i=0; i<30; i++){
-            printf("%s",dic.e[pos].variacoes[i]);
-          }
-          printf(" & %s & %s", dic.e[pos].ingles, dic.e[pos].sinonimos);
-        }
-      }
-      i=((i+1)%dic.size);
-    }
-  }
-}
-
-char* getPalavra(Dic dic, char* palavra){
-  int pos = hash(palavra, dic.size);
-
-  if(dic.e[pos].ocupado){
-    if(strcmp(allLower(palavra), dic.e[pos].palavra)==0) return dic.e[pos].palavra;
-    for(int i=0; i<30; i++){
-      if(strcmp(allLower(palavra), dic.e[pos].variacoes[i])==0) return dic.e[pos].palavra;
-    }
-  }
-  int i;
-  i = pos+1;
-  while(i!=pos){
-    if(dic.e[pos].ocupado){
-      if(strcmp(allLower(palavra), dic.e[i].palavra)==0) return dic.e[pos].palavra;
-      for(int j=0; j<30; j++){
-        if(strcmp(allLower(palavra), dic.e[pos].variacoes[j])==0) return dic.e[pos].palavra;
-      }
-    }
-    i=((i+1)%dic.size);
-  }
-
-  return NULL;
 }
 
 char* getIngles(Dic dic, char* palavra){
