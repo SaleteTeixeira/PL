@@ -4,6 +4,7 @@ typedef struct Estrutura{
     char** variacoes;
     char* ingles;
     char* sinonimos;
+    int tam;
     int ocupado;
 }Estrutura;
 
@@ -23,6 +24,6 @@ char* getIngles(Dic dic, char* palavra);
 
 int exists(Dic dic, char* palavra);
 
-void copiar(Dic dic, int pos, char* palavra, char* significado, char** variacoes, char* ingles, char* sinonimos);
+void copiar(Dic dic, int pos, char* palavra, char* significado, char* variacoes, char* ingles, char* sinonimos);
 
-Dic insert(Dic ests, char* palavra, char* significado, char** variacoes, char* ingles, char* sinonimos);
+Dic insert(Dic ests, char* palavra, char* significado, char* variacoes, char* ingles, char* sinonimos);

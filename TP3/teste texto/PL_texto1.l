@@ -1,5 +1,4 @@
 %{
-#include "hash.h"
 char* atual=NULL;
 char* antiga=NULL;
 char* juntas=NULL;
@@ -8,7 +7,7 @@ char* pontAtual;
 char** existentes;
 char* aux;
 int i, j, ocup, tamArray=0, existe;
-Dic dicionario;
+char* array[6] = {"ator","cenário","duplo","curta-metragem","cenário","efeitos visuais"};
 
 int pontuacaoDif(int i){
     return (i<yyleng && yytext[i]!=',' && yytext[i]!=';' &&
@@ -28,15 +27,11 @@ int pontuacaoIgual(int i){
             yytext[i]=='/');
 }
 
-int textowrap (void ){
-    return 1;
-}
-
 %}
 
 %%
 
-\\end\{document\}     {   printf("\\begin{appendices}\n");
+\\end\{document\}     { printf("\\begin{appendices}\n");
                         printf("\\chapter{Dicionário Cinematográfico}\n");
                         printf("\\begin{table}[h!]\n");
                         printf("\\begin{center]\n");
@@ -45,7 +40,9 @@ int textowrap (void ){
                         printf(" & \\textbf{Designação em Inglês} & \\textbf{Sinónimos}\\\n");
                         printf("\\hline\n");
                         for(i=0; i<tamArray; i++){
-                            printInfo(dicionario,existentes[i]);
+                            for(int p=0;p<6;p++){
+                                if(strcmp(existentes[i],array[p])==0) printf("%s",array[p]);
+                            }
                         }
                         printf("\\end{tabular}\n");
                         printf("\\caption{Tabela ilustrativa do Dicionário}\n");
@@ -70,11 +67,18 @@ int textowrap (void ){
                        pontAtual[ocup] = yytext[i];
                        i++; ocup++;
                     }
+
+            int existeARRAY=0;
+            for(i=0; i<tamArray; i++){
+                for(int p=0;p<6;p++){
+                    if(strcmp(existentes[i],array[p])==0) existeARRAY=1;
+                }
+            }
                     
-                    if(exists(dicionario,atual)) {
-                        printf("\\textbf{%s}\\footnote{%s}",atual,getIngles(dicionario,atual));
+                    if(existeARRAY) {
+                        printf("\\textbf{%s}\\footnote{%s}",atual,"ingles");
                         existe = 0;
-                        strcpy(aux,getPalavra(dicionario,atual));
+                        strcpy(aux,atual);
                         for(int k=0; k<tamArray && !existe; k++){
                             if(strcmp(existentes[tamArray],aux)==0) existe=1;
                         }
@@ -89,10 +93,18 @@ int textowrap (void ){
                             strcat(juntas,antiga);
                             strcat(juntas,pontAnt);
                             strcat(juntas,atual);
-                            if(exists(dicionario,juntas)) {
-                                printf("\\textbf{%s}\\footnote{%s}",juntas,getIngles(dicionario,juntas));
+
+                            int existeARRAY=0;
+                            for(i=0; i<tamArray; i++){
+                                for(int p=0;p<6;p++){
+                                    if(strcmp(existentes[i],array[p])==0) existeARRAY=1;
+                                }
+                            }
+
+                            if(existeARRAY) {
+                                printf("\\textbf{%s}\\footnote{%s}",juntas,"Ingles");
                                 existe = 0;
-                                strcpy(aux,getPalavra(dicionario,juntas));
+                                strcpy(aux,juntas);
                                 for(int k=0; k<tamArray && !existe; k++){
                                     if(strcmp(existentes[tamArray],aux)==0) existe=1;
                                 }
@@ -114,14 +126,19 @@ int textowrap (void ){
                         strcpy(pontAnt,pontAtual);
                     }
                 }
-                if(!exists(dicionario,atual))
-                    printf("%s", atual);
+
+            int existeARRAY=0;
+            for(i=0; i<tamArray; i++){
+                for(int p=0;p<6;p++){
+                    if(strcmp(existentes[i],array[p])==0) existeARRAY=1;
+                }
+            }
+
+                if(existeARRAY) printf("%s", atual);
                 printf("%s", pontAtual);
             }
 %%
 
-void lexTexto(Dic dic, char* filename){
-    dicionario = dic;
-    textoin = fopen(filename, "r");
+int main(){
     yylex();
-}
+    return 0;}

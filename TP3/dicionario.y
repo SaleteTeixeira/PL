@@ -1,8 +1,11 @@
 %{
 #include "hash.h"
 #include <string.h>
+#include <stdio.h>
+
 extern int yylex();
 void yyerror(char*);
+extern FILE* yyin;
 
 int v=0;
 
@@ -55,7 +58,12 @@ Termo : '-'
 
 %%
 
-void load(Dic dic){
-    dicionario = dic;    
+void yyerror (char* erro) {
+   fprintf(stderr, "%s\n", erro);
+ }
+
+void load(Dic dic, char* filename){
+    dicionario = dic;
+    yyin = fopen(filename, "r");    
     yyparse();
 }
