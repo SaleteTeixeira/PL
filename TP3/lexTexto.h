@@ -1,3 +1,3 @@
-void lexTexto(Dic dic);
+void lexTexto(Dic dic, char* filename);
 
 void yylex();
