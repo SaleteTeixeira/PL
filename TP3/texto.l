@@ -56,8 +56,6 @@ int textowrap (void ){
                     }
 
 .*         {    for(int i=0; i<yyleng; i++){
-                    memset(atual,0,strlen(atual));
-                    memset(pontAtual,0,strlen(pontAtual));
                     j = 0;
                     ocup = 0;
 
@@ -71,7 +69,7 @@ int textowrap (void ){
                        i++; ocup++;
                     }
                     
-                    if(exists(dicionario,atual)) {
+                    /*if(exists(dicionario,atual)) {
                         printf("\\textbf{%s}\\footnote{%s}",atual,getIngles(dicionario,atual));
                         existe = 0;
                         strcpy(aux,getPalavra(dicionario,atual));
@@ -112,11 +110,13 @@ int textowrap (void ){
                         memset(pontAnt,0,ocup);
                         strcpy(antiga,atual);
                         strcpy(pontAnt,pontAtual);
-                    }
+                    }*/
                 }
-                if(!exists(dicionario,atual))
-                    printf("%s", atual);
+                /*if(!exists(dicionario,atual)) printf("%s", atual);
                 printf("%s", pontAtual);
+
+                memset(atual,0,strlen(atual));
+                memset(pontAtual,0,strlen(pontAtual));*/
             }
 %%
 
