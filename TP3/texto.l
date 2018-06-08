@@ -36,13 +36,13 @@ int textowrap (void ){
 
 %%
 
-\\end\{document\}     {   printf("\\begin{appendices}\n");
+\\end\{document\}     { printf("\\begin{appendices}\n");
                         printf("\\chapter{Dicionário Cinematográfico}\n");
                         printf("\\begin{table}[h!]\n");
                         printf("\\begin{center]\n");
                         printf("\\begin{tabular}{c|c|c|c|c}\n");
                         printf("\\textbf{Palavra} & \\textbf{Significado} & \\textbf{Variações}");
-                        printf(" & \\textbf{Designação em Inglês} & \\textbf{Sinónimos}\\\n");
+                        printf(" & \\textbf{Designação em Inglês} & \\textbf{Sinónimos}\\\\\n");
                         printf("\\hline\n");
                         for(i=0; i<tamArray; i++){
                             printInfo(dicionario,existentes[i]);

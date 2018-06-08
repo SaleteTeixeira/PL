@@ -6,14 +6,15 @@
 
 int main(int argc, char** argv){
 
-    if(argc < 3) return -1;
+    if(argc < 3){
+        printf("Número de argumentos inválido.\n");
+        return -1;
+    }
 
     Dic dicionario;
-    dicionario = init();
-    load(dicionario, argv[1]);
-	/*lexTexto(dicionario, argv[2]);*/
-
-    printf("CONSEGUIR CHEGAR AQUI\n");
+    dicionario = init(40);
+    dicionario = load(dicionario, argv[1]);
+	lexTexto(dicionario, argv[2]);
 
     return 0;
 }
