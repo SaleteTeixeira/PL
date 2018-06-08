@@ -28,17 +28,21 @@ int pontuacaoIgual(int i){
             yytext[i]=='/');
 }
 
+int textowrap (void ){
+    return 1;
+}
+
 %}
 
 %%
 
-\\end{document}     {   printf("\\begin{appendices}\n");
+\\end\{document\}     { printf("\\begin{appendices}\n");
                         printf("\\chapter{Dicionário Cinematográfico}\n");
                         printf("\\begin{table}[h!]\n");
                         printf("\\begin{center]\n");
-                        printf("\\begin{tabular}{c|c|c|c|c}\n";)
+                        printf("\\begin{tabular}{c|c|c|c|c}\n");
                         printf("\\textbf{Palavra} & \\textbf{Significado} & \\textbf{Variações}");
-                        printf(" & \\textbf{Designação em Inglês} & \\textbf{Sinónimos}\\\n");
+                        printf(" & \\textbf{Designação em Inglês} & \\textbf{Sinónimos}\\\\\n");
                         printf("\\hline\n");
                         for(i=0; i<tamArray; i++){
                             printInfo(dicionario,existentes[i]);
@@ -82,8 +86,9 @@ int pontuacaoIgual(int i){
                     }
                     else {
                         if(antiga!=NULL){
-                            strcat(antiga,pontAnt,juntas);
-                            strcat(juntas,atual,juntas);
+                            strcat(juntas,antiga);
+                            strcat(juntas,pontAnt);
+                            strcat(juntas,atual);
                             if(exists(dicionario,juntas)) {
                                 printf("\\textbf{%s}\\footnote{%s}",juntas,getIngles(dicionario,juntas));
                                 existe = 0;
@@ -115,7 +120,8 @@ int pontuacaoIgual(int i){
             }
 %%
 
-void lexTexto(Dic dic){
+void lexTexto(Dic dic, char* filename){
     dicionario = dic;
+    textoin = fopen(filename, "r");
     yylex();
 }

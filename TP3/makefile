@@ -13,17 +13,17 @@ lex.texto.c : texto.l hash.o
 y.tab.o : y.tab.c hash.o
 	gcc -c y.tab.c -lm -ll
 
-lexDicionario.o : lex.dicionario.c y.tab.h hash.o
-	gcc -c lex.dicionario.c -o lexDicionario.o
+lexDicionario.o : lex.yy.c y.tab.h hash.o
+	gcc -c lex.yy.c -o lexDicionario.o
 
 y.tab.c y.tab.h : dicionario.y hash.o
 	yacc -d dicionario.y
 
-lex.dicionario.c : dicionario.l hash.o
-	flex -l -P dicionario dicionario.l
+lex.yy.c : dicionario.l hash.o
+	flex -l dicionario.l
 
 hash.o : hash.c
 	gcc -c hash.c -o hash.o
 
 clean:
-	rm *.o lex.dicionario.c lex.texto.c y.tab.c y.tab.h sttc
+	rm *.o lex.yy.c lex.texto.c y.tab.c y.tab.h sttc

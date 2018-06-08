@@ -1,3 +1,3 @@
-void load(Dic dic);
+Dic load(Dic dic, char* filename);
 
 void yyerror(char*);
