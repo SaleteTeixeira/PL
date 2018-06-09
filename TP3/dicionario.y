@@ -40,11 +40,6 @@ Comando : PALAVRA       { palavra = (char*) malloc(strlen($1)*sizeof(char));
         | SINONIMOS     { sinonimos = (char*) malloc(strlen($1)*sizeof(char));
                           strcpy(sinonimos,$1);
                           dicionario = insert(dicionario,palavra,significado,variacoes,ingles,sinonimos);
-                          /*free(palavra);
-                          free(significado);
-                          free(variacoes);
-                          free(ingles);
-                          free(sinonimos);*/
                         }
         ;
 

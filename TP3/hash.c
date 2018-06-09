@@ -21,15 +21,17 @@ Dic init(int size){
   return *dic;
 }
 
+
 int hash(char* palavra, int size){
   int codigo = 0;
   int tam = strlen(palavra);
   for(int i = 0; i < tam; i++){
-    codigo+= (int) palavra[i];
+    codigo+= abs((int) palavra[i]);
   }
 
   return codigo%size;
 }
+
 
 char* allLower(char* palavra){
   int tam = strlen(palavra);
@@ -40,6 +42,7 @@ char* allLower(char* palavra){
 
   return palavra;
 }
+
 
 void copiar(Dic dic, int pos, char* palavra, char* significado, char* variacoes, char* ingles, char* sinonimos){
     dic.e[pos].palavra = (char*) malloc(strlen(palavra)*sizeof(char));
@@ -53,6 +56,11 @@ void copiar(Dic dic, int pos, char* palavra, char* significado, char* variacoes,
 
     dic.e[pos].sinonimos = (char*) malloc(strlen(sinonimos)*sizeof(char));
     strcpy(dic.e[pos].sinonimos, sinonimos);
+
+    if(dic.e[pos].significado[strlen(dic.e[pos].significado)-1]=='!') dic.e[pos].significado[strlen(dic.e[pos].significado)-1]=' ';
+    if(dic.e[pos].palavra[strlen(dic.e[pos].palavra)-1]=='!') dic.e[pos].palavra[strlen(dic.e[pos].palavra)-1]=' ';
+    if(dic.e[pos].ingles[strlen(dic.e[pos].ingles)-1]=='!') dic.e[pos].ingles[strlen(dic.e[pos].ingles)-1]=' ';
+    if(dic.e[pos].sinonimos[strlen(dic.e[pos].sinonimos)-1]=='!') dic.e[pos].sinonimos[strlen(dic.e[pos].sinonimos)-1]=' ';
 
     dic.e[pos].ocupado=1;
 
@@ -109,9 +117,6 @@ void copiar(Dic dic, int pos, char* palavra, char* significado, char* variacoes,
         else strcpy(dic.e[pos].variacoes[i],result[i]);
    }
 }
-
-
-
 
 
 Dic insert(Dic ests, char* palavra, char* significado, char* variacoes, char* ingles, char* sinonimos){
@@ -187,14 +192,14 @@ Dic insert(Dic ests, char* palavra, char* significado, char* variacoes, char* in
 }
 
 
-//METER MAIS BONITO ---------------------------------> SÉRGIO
 void printInfo(Dic dic, char* palavra){
   int pos = hash(palavra, dic.size);
 
   if(dic.e[pos].ocupado && strcmp(dic.e[pos].palavra,allLower(palavra))==0){
       printf("%s & %s & ", dic.e[pos].palavra, dic.e[pos].significado);
       for(int i=0; i<dic.e[pos].tam; i++){
-        printf("%s; ",dic.e[pos].variacoes[i]);
+        if(i==dic.e[pos].tam-2) printf("%s; ",dic.e[pos].variacoes[i]);
+        else printf("%s",dic.e[pos].variacoes[i]);
       }
       printf(" & %s & %s\\\\\n", dic.e[pos].ingles, dic.e[pos].sinonimos);
   }
@@ -203,8 +208,9 @@ void printInfo(Dic dic, char* palavra){
       for(int i=0; i<dic.size && !flag; i++){
           if(dic.e[i].ocupado && strcmp(dic.e[i].palavra,allLower(palavra))==0){
               printf("%s & %s & ", dic.e[i].palavra, dic.e[i].significado);
-              for(int i=0; i<dic.e[i].tam; i++){
-                  printf("%s; ",dic.e[i].variacoes[i]);
+              for(int j=0; j<dic.e[i].tam; j++){
+                  if(j==dic.e[i].tam-2) printf("%s; ",dic.e[i].variacoes[j]);
+                  else printf("%s",dic.e[i].variacoes[j]);
               }
               printf(" & %s & %s\\\\\n", dic.e[i].ingles, dic.e[i].sinonimos);
           }
@@ -213,25 +219,29 @@ void printInfo(Dic dic, char* palavra){
 }
 
 
+int exists(Dic dic, char* palavra){
 
+  int pos = hash(palavra, dic.size);
 
+  if(dic.e[pos].ocupado){
+    if(strcmp(allLower(palavra), dic.e[pos].palavra)==0) return 1;
+    for(int i=0; i<dic.e[pos].tam; i++){
+      if(strcmp(allLower(palavra), dic.e[pos].variacoes[i])==0) return 1;
+    }
+  }
+  for(int i=0; i<dic.size; i++){
+      if(dic.e[i].ocupado && strcmp(dic.e[i].palavra,allLower(palavra))==0) return 1;
+      for(int k=0; k<dic.e[i].tam; k++){
+          if(strcmp(allLower(palavra), dic.e[i].variacoes[k])==0) return 1;
+      }
+  }
 
+  return 0;
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-//POR TESTAR //
 
 char* getPalavra(Dic dic, char* palavra){
+  
   int pos = hash(palavra, dic.size);
 
   if(dic.e[pos].ocupado){
@@ -240,20 +250,16 @@ char* getPalavra(Dic dic, char* palavra){
       if(strcmp(allLower(palavra), dic.e[pos].variacoes[i])==0) return dic.e[pos].palavra;
     }
   }
-  int i;
-  i = pos+1;
-  while(i!=pos){
-    if(dic.e[i].ocupado){
-      if(strcmp(allLower(palavra), dic.e[i].palavra)==0) return dic.e[pos].palavra;
-      for(int j=0; j<dic.e[i].tam; j++){
-        if(strcmp(allLower(palavra), dic.e[i].variacoes[j])==0) return dic.e[pos].palavra;
+  for(int i=0; i<dic.size; i++){
+      if(dic.e[i].ocupado && strcmp(dic.e[i].palavra,allLower(palavra))==0) return dic.e[i].palavra;
+      for(int k=0; k<dic.e[i].tam; k++){
+        if(strcmp(allLower(palavra), dic.e[i].variacoes[k])==0) return dic.e[i].palavra;
       }
-    }
-    i=((i+1)%dic.size);
   }
 
   return NULL;
 }
+
 
 char* getIngles(Dic dic, char* palavra){
   int pos = hash(palavra, dic.size);
@@ -264,65 +270,18 @@ char* getIngles(Dic dic, char* palavra){
       if(strcmp(allLower(palavra), dic.e[pos].variacoes[i])==0) return dic.e[pos].ingles;
     }
   }
-  int i;
-  i = pos+1;
-  while(i!=pos){
-    if(dic.e[i].ocupado){
-      if(strcmp(allLower(palavra), dic.e[i].palavra)==0) return dic.e[pos].ingles;
-      for(int j=0; j<dic.e[i].tam; j++){
-        if(strcmp(allLower(palavra), dic.e[i].variacoes[j])==0) return dic.e[pos].ingles;
+  for(int i=0; i<dic.size; i++){
+      if(dic.e[i].ocupado && strcmp(dic.e[i].palavra,allLower(palavra))==0) return dic.e[i].ingles;
+      for(int k=0; k<dic.e[i].tam; k++){
+        if(strcmp(allLower(palavra), dic.e[i].variacoes[k])==0) return dic.e[i].ingles;
       }
-    }
-    i=((i+1)%dic.size);
   }
 
   return NULL;
 }
 
-int exists(Dic dic, char* palavra){
-  int pos = hash(palavra, dic.size);
 
-  if(dic.e[pos].ocupado){
-    if(strcmp(allLower(palavra), dic.e[pos].palavra)==0) return 1;
-    for(int i=0; i<dic.e[pos].tam; i++){
-      if(strcmp(allLower(palavra), dic.e[pos].variacoes[i])==0) return 1;
-    }
-  }
-  int i;
-  i = pos+1;
-  while(i!=pos){
-    if(dic.e[i].ocupado){
-      if(strcmp(allLower(palavra), dic.e[i].palavra)==0) return 1;
-      for(int j=0; j<dic.e[i].tam; j++){
-        if(strcmp(allLower(palavra), dic.e[i].variacoes[j])==0) return 1;
-      }
-    }
-    i=((i+1)%dic.size);
-  }
-
-  return 0;
-}
-
-
-
-
-//FREE NÃO FUNCIONA, NEM OS DO YACC ---------------------------------------------------> SÉRGIO
 void clean(Dic dic){
-  for(int i=0; i<dic.size; i++){
-    if(dic.e[i].ocupado){
-        /*free(&dic.e[i].palavra);
-        free(&dic.e[i].sinonimos);
-        free(&dic.e[i].significado);
-        free(&dic.e[i].ingles);
-        for(int k=0; k<dic.e[i].tam; k++){
-            free(&dic.e[i].variacoes[k]);
-        }
-        free(&dic.e[i].variacoes);*/
-    }
-    //free(&dic.e[i]);
-  }
   dic.size=0;
   dic.ocup=0;
-  //free(&dic.e);
-  //free(&dic);
 }
