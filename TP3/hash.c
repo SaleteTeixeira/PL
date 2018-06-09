@@ -198,10 +198,10 @@ void printInfo(Dic dic, char* palavra){
   if(dic.e[pos].ocupado && strcmp(dic.e[pos].palavra,allLower(palavra))==0){
       printf("%s & %s & ", dic.e[pos].palavra, dic.e[pos].significado);
       for(int i=0; i<dic.e[pos].tam; i++){
-        if(i==dic.e[pos].tam-2) printf("%s; ",dic.e[pos].variacoes[i]);
+        if(i!=dic.e[pos].tam-1) printf("%s; ",dic.e[pos].variacoes[i]);
         else printf("%s",dic.e[pos].variacoes[i]);
       }
-      printf(" & %s & %s\\\\\n", dic.e[pos].ingles, dic.e[pos].sinonimos);
+      printf(" & %s & %s\\\\\\hline\n", dic.e[pos].ingles, dic.e[pos].sinonimos);
   }
   else{
       int flag=0;
@@ -209,10 +209,10 @@ void printInfo(Dic dic, char* palavra){
           if(dic.e[i].ocupado && strcmp(dic.e[i].palavra,allLower(palavra))==0){
               printf("%s & %s & ", dic.e[i].palavra, dic.e[i].significado);
               for(int j=0; j<dic.e[i].tam; j++){
-                  if(j==dic.e[i].tam-2) printf("%s; ",dic.e[i].variacoes[j]);
+                  if(j!=dic.e[i].tam-1) printf("%s; ",dic.e[i].variacoes[j]);
                   else printf("%s",dic.e[i].variacoes[j]);
               }
-              printf(" & %s & %s\\\\\n", dic.e[i].ingles, dic.e[i].sinonimos);
+              printf(" & %s & %s\\\\\\hline\n", dic.e[i].ingles, dic.e[i].sinonimos);
           }
       }
   }
