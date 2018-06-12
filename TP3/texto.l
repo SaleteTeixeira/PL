@@ -35,6 +35,50 @@ int textowrap (void ){
     return 1;
 }
 
+void naoexiste(){
+    existentes[tamArray] = (char*) malloc(strlen(aux)*sizeof(char));
+	strcpy(existentes[tamArray],aux);
+	tamArray++;
+}
+
+void iniciar(){
+    free(atual);
+	free(pontAtual);
+	atual = NULL;
+	copia = NULL;
+	pontAtual = NULL;
+
+	j = 0;
+	ocup = 0;
+	juntou = 0;
+
+	atual = (char*) malloc(yyleng*sizeof(char));
+	while(pontuacaoDif(i)){
+		atual[j] = yytext[i];
+		j++; i++;
+	}
+	if(!j) atual=NULL;
+	else atual[j] = '\0';
+
+	pontAtual = (char*) malloc(yyleng*sizeof(char));
+	while(pontuacaoIgual(i)){
+		pontAtual[ocup] = yytext[i];
+		i++; ocup++;
+	}
+	if(!ocup) pontAtual = NULL; 
+	else pontAtual[ocup]='\0';
+}
+
+void existef(){
+    aux = (char*) malloc(strlen(getPalavra(dicionario,copia))*sizeof(char));
+	strcpy(aux,getPalavra(dicionario,copia));
+
+	for(int k=0; k<tamArray && !existe; k++){
+		if(strcmp(existentes[k],aux)==0) existe=1;
+	}
+}
+
+
 %}
 
 %%
@@ -56,54 +100,32 @@ int textowrap (void ){
 						  printf("\\begin{document}");
 						}
 
-^\\end\{document\}      { printf("\\clearpage\n");
-						  printf("\\begin{appendix}\n");
-                          printf("\\section{Dicionário Cinematográfico}\n");
-                          printf("\\begingroup\n");
-						  printf("\\setlength\\LTleft{-90pt}\n");
-						  printf("\\setlength\\LTright{100pt}\n");
-                          printf("\\begin{longtable}{|p{0.2\\linewidth}|p{0.5\\linewidth}|p{0.25\\linewidth}|p{0.2\\linewidth}|p{0.15\\linewidth}|}\\hline\n");
-                          printf("\\textbf{Palavra} & \\textbf{Significado} & \\textbf{Variações}");
-                          printf(" & \\textbf{Designação em Inglês} & \\textbf{Sinónimos}\\\\\\hline\n");
-                          for(i=0; i<tamArray; i++){
-                             printInfo(dicionario,existentes[i]);
-                          }
-                          printf("\\caption{Tabela ilustrativa do Dicionário}\n");
-                          printf("\\end{longtable}\n");
-                          printf("\\endgroup\n");
-                          printf("\\end{appendix}\n");
-                          printf("\\end{document}");
+^\\end\{document\}      { if(tamArray){
+							printf("\\clearpage\n");
+							printf("\\begin{appendix}\n");
+							printf("\\section{Dicionário Cinematográfico}\n");
+							printf("\\begingroup\n");
+							printf("\\setlength\\LTleft{-90pt}\n");
+							printf("\\setlength\\LTright{100pt}\n");
+							printf("\\begin{longtable}{|p{0.2\\linewidth}|p{0.5\\linewidth}|p{0.25\\linewidth}|p{0.2\\linewidth}|p{0.15\\linewidth}|}\\hline\n");
+							printf("\\textbf{Palavra} & \\textbf{Significado} & \\textbf{Variações}");
+							printf(" & \\textbf{Designação em Inglês} & \\textbf{Sinónimos}\\\\\\hline\n");
+							for(i=0; i<tamArray; i++){
+								printInfo(dicionario,existentes[i]);
+							}
+							printf("\\caption{Tabela ilustrativa do Dicionário}\n");
+							printf("\\end{longtable}\n");
+							printf("\\endgroup\n");
+							printf("\\end{appendix}\n");
+						  }
+						  printf("\\end{document}");
                         }
 
 \n 						{printf("\n");}
 
 .*            			{   i=0;
 							while(i<yyleng){
-			                    free(atual);
-			                    free(pontAtual);
-			                    atual = NULL;
-			                    copia = NULL;
-			                    pontAtual = NULL;
-
-			                    j = 0;
-			                    ocup = 0;
-			                    juntou = 0;
-
-			                    atual = (char*) malloc(yyleng*sizeof(char));
-			                    while(pontuacaoDif(i)){
-			                        atual[j] = yytext[i];
-			                        j++; i++;
-			                    }
-			                    if(!j) atual=NULL;
-			                    else atual[j] = '\0';
-
-			                    pontAtual = (char*) malloc(yyleng*sizeof(char));
-			                    while(pontuacaoIgual(i)){
-			                       pontAtual[ocup] = yytext[i];
-			                       i++; ocup++;
-			                    }
-			                    if(!ocup) pontAtual = NULL; 
-			                    else pontAtual[ocup]='\0';
+			                    iniciar();
 
 			                    if(antiga!=NULL){
 			                        juntas = (char*) malloc((strlen(antiga)+strlen(pontAnt)+strlen(atual))*sizeof(char));
@@ -123,16 +145,9 @@ int textowrap (void ){
 			                            existe = 0;
 			                            printf("\\textbf{%s}\\footnote{%s}%s",juntas,getIngles(dicionario,copia),pontAtual);
 
-			                            aux = (char*) malloc(strlen(getPalavra(dicionario,copia))*sizeof(char));
-			                            strcpy(aux,getPalavra(dicionario,copia));
-
-			                            for(int k=0; k<tamArray && !existe; k++){
-			                                if(strcmp(existentes[k],aux)==0) existe=1;
-			                            }
+			                            existef();
 			                            if(!existe){
-			                                existentes[tamArray] = (char*) malloc(strlen(aux)*sizeof(char));
-			                                strcpy(existentes[tamArray],aux);
-			                                tamArray++;
+			                                naoexiste();
 			                            }
 			                            free(aux);
 			                            free(copia);
@@ -145,16 +160,9 @@ int textowrap (void ){
 			                            if(exists(dicionario,copia)){
 			                                existe = 0;
 			                                printf("\\textbf{%s}\\footnote{%s}%s",antiga,getIngles(dicionario,copia),pontAnt);
-			                                aux = (char*) malloc(strlen(getPalavra(dicionario,copia))*sizeof(char));
-			                                strcpy(aux,getPalavra(dicionario,copia));
-
-			                                for(int k=0; k<tamArray && !existe; k++){
-			                                    if(strcmp(existentes[k],aux)==0) existe=1;
-			                                }
+			                                existef();
 			                                if(!existe){                            
-			                                    existentes[tamArray] = (char*) malloc(strlen(aux)*sizeof(char));
-			                                    strcpy(existentes[tamArray],aux);
-			                                    tamArray++;
+			                                    naoexiste();
 			                                }
 			                                free(aux);
 			                            }
@@ -201,16 +209,9 @@ int textowrap (void ){
 				                if(exists(dicionario,copia)){
 				                	printf("\\textbf{%s}\\footnote{%s}%s",atual,getIngles(dicionario,copia),pontAtual);
 				                	existe=0;
-		                            aux = (char*) malloc(strlen(getPalavra(dicionario,copia))*sizeof(char));
-		                            strcpy(aux,getPalavra(dicionario,copia));
-
-		                            for(int k=0; k<tamArray && !existe; k++){
-		                                if(strcmp(existentes[k],aux)==0) existe=1;
-		                            }
+		                            existef();
 		                            if(!existe){                            
-		                                existentes[tamArray] = (char*) malloc(strlen(aux)*sizeof(char));
-		                                strcpy(existentes[tamArray],aux);
-		                                tamArray++;
+		                                naoexiste();
 		                            }
 		                            free(aux);
 				                }
